@@ -43,17 +43,11 @@ if check_password():
     # Define the scope for the Google Sheets API
     scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
-    try:
-        # Load credentials from the JSON file
-        creds = Credentials.from_service_account_file(credentials_file_path, scopes=scopes)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('atom-404416-23dbcd33bb65.json', scope)
     
-        # Authorize the client
-        client = gspread.authorize(creds)
+        
+    client = gspread.authorize(creds)
     
-        # Print success message
-        print("Google Sheets client authorized successfully.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
 
     spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
 
