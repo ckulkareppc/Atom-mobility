@@ -37,32 +37,27 @@ def check_password():
 if check_password():
     
     st.title('Atom Mobility Results Dashboard')
-    
-    load_dotenv()
 
-    # Read credentials from environment variables
-    credentials_info = {
-        "type": os.getenv("GOOGLE_CREDENTIALS_TYPE"),
-        "project_id": os.getenv("GOOGLE_PROJECT_ID"),
-        "private_key_id": os.getenv("GOOGLE_PRIVATE_KEY_ID"),
-        "private_key": os.getenv("GOOGLE_PRIVATE_KEY").replace("\\n", "\n"),  # Ensure newlines are correct
-        "client_email": os.getenv("GOOGLE_CLIENT_EMAIL"),
-        "client_id": os.getenv("GOOGLE_CLIENT_ID"),
-        "auth_uri": os.getenv("GOOGLE_AUTH_URI"),
-        "token_uri": os.getenv("GOOGLE_TOKEN_URI"),
-        "auth_provider_x509_cert_url": os.getenv("GOOGLE_AUTH_PROVIDER_X509_CERT_URL"),
-        "client_x509_cert_url": os.getenv("GOOGLE_CLIENT_X509_CERT_URL"),
-        "universe_domain": os.getenv("GOOGLE_UNIVERSE_DOMAIN")
-    }
+    credentials_file_path = 'atom-404416-23dbcd33bb65.json'
 
-    # Create Credentials object
+    # Define the scope for the Google Sheets API
+    scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+
     try:
-        creds = Credentials.from_service_account_info(credentials_info)
-        # Authenticate and connect to Google Sheets
+        # Load credentials from the JSON file
+        creds = Credentials.from_service_account_file(credentials_file_path, scopes=scopes)
+    
+        # Authorize the client
         client = gspread.authorize(creds)
+    
+        # Print success message
         print("Google Sheets client authorized successfully.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
+    
+    
     
     
 
