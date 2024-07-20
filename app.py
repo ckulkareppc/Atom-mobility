@@ -7,9 +7,10 @@ import plotly.io as pio
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+# Authentication function
 def check_password():
     def password_entered():
-        if st.session_state["password"] == st.secrets["password"]:
+        if st.session_state["password"] == st.secrets["general"]["password"]:
             st.session_state["password_correct"] = True
             del st.session_state["password"]  # don't store password
         else:
