@@ -33,12 +33,12 @@ if check_password():
     st.title('Atom Mobility Results Dashboard')
     
     # Load Google Sheets credentials from Streamlit secrets
-        credentials_info = st.secrets["google_sheets_credentials"]
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_info)
-    
-        # Authenticate and connect to Google Sheets
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        client = gspread.authorize(creds)
+    credentials_info = st.secrets["google_sheets_credentials"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_info)
+        
+    # Authenticate and connect to Google Sheets
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    client = gspread.authorize(creds)
     
     spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
     
