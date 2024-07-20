@@ -34,25 +34,12 @@ def check_password():
 if check_password():
     
     st.title('Atom Mobility Results Dashboard')
-    
-    credentials_info = st.secrets["google_sheets_credentials"]
-    
-    # Convert credentials_info to a dictionary
-    credentials_dict = {
-        "type": credentials_info["type"],
-        "project_id": credentials_info["project_id"],
-        "private_key_id": credentials_info["private_key_id"],
-        "private_key": credentials_info["private_key"],
-        "client_email": credentials_info["client_email"],
-        "client_id": credentials_info["client_id"],
-        "auth_uri": credentials_info["auth_uri"],
-        "token_uri": credentials_info["token_uri"],
-        "auth_provider_x509_cert_url": credentials_info["auth_provider_x509_cert_url"],
-        "client_x509_cert_url": credentials_info["client_x509_cert_url"],
-        "universe_domain": credentials_info["universe_domain"]
-    }
-    
-    creds = Credentials.from_service_account_info(credentials_dict)
+
+    # Load credentials from the JSON key file
+    creds = Credentials.from_service_account_file('atom-404416-23dbcd33bb65.json')
+
+    # Authenticate and connect to Google Sheets
+    client = gspread.authorize(creds)
 
     # Authenticate and connect to Google Sheets
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
