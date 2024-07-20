@@ -55,6 +55,7 @@ if check_password():
     except Exception as e:
         print(f"An error occurred: {e}")
 
+    spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
 
     
     
