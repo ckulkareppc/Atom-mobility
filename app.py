@@ -8,7 +8,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
 import os
-from dotenv import load_dotenv load_dotenv()
+
 
 # Authentication function
 def check_password():
