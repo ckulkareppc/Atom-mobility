@@ -6,6 +6,8 @@ import plotly.graph_objs as go
 import plotly.io as pio
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
+
 
 # Authentication function
 def check_password():
