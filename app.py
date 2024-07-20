@@ -7,7 +7,7 @@ import plotly.io as pio
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
-
+import os
 
 # Authentication function
 def check_password():
@@ -35,14 +35,22 @@ if check_password():
     
     st.title('Atom Mobility Results Dashboard')
 
-    # Load credentials from the JSON key file
-    creds = Credentials.from_service_account_file('atom-404416-23dbcd33bb65.json')
+    credentials_info = {
+    "type": os.getenv("GOOGLE_CREDENTIALS_TYPE"),
+    "project_id": os.getenv("GOOGLE_PROJECT_ID"),
+    "private_key_id": os.getenv("GOOGLE_PRIVATE_KEY_ID"),
+    "private_key": os.getenv("GOOGLE_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.getenv("GOOGLE_CLIENT_EMAIL"),
+    "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+    "auth_uri": os.getenv("GOOGLE_AUTH_URI"),
+    "token_uri": os.getenv("GOOGLE_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.getenv("GOOGLE_AUTH_PROVIDER_X509_CERT_URL"),
+    "client_x509_cert_url": os.getenv("GOOGLE_CLIENT_X509_CERT_URL"),
+    "universe_domain": os.getenv("GOOGLE_UNIVERSE_DOMAIN")
+}
 
-    # Authenticate and connect to Google Sheets
-    client = gspread.authorize(creds)
-
-    # Authenticate and connect to Google Sheets
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    # Create Credentials object
+    creds = Credentials.from_service_account_info(credentials_info)
 
     # Authenticate and connect to Google Sheets
     client = gspread.authorize(creds)
