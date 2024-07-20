@@ -4,3 +4,5 @@ oauth2client
 pandas
 numpy
 plotly
+google-auth
+google-auth-oauthlib
