@@ -33,7 +33,6 @@ if check_password():
     
     st.title('Atom Mobility Results Dashboard')
     
-    if check_password():
     # Load Google Sheets credentials from Streamlit secrets
     credentials_info = st.secrets["google_sheets_credentials"]
     
