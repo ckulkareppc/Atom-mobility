@@ -43,7 +43,7 @@ if check_password():
     # Define the scope for the Google Sheets API
     scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
-    creds = ServiceAccountCredentials.from_json_keyfile_name('atom-404416-23dbcd33bb65.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('atom-404416-23dbcd33bb65.json', scopes)
     
         
     client = gspread.authorize(creds)
