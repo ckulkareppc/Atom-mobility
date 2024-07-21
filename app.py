@@ -78,7 +78,6 @@ if check_password():
     # Create the first DataFrame up to column 'A'
     df1 = df.loc[:, :'Cost per Offline Conversion']
     
-    df1 = df1.fillna(0)
     
     # Add the year to the month column starting from 2022
     start_year = 2022
@@ -98,8 +97,6 @@ if check_password():
     df2 = df.loc[:, 'Remarketing':]
     
     df2 = df2.rename(columns={'Remarketing': 'Month'})
-    
-    df2 = df2.fillna(0)
     
     # Add the year to the month column starting from 2022
     start_year = 2022
