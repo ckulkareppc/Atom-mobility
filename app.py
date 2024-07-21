@@ -136,6 +136,12 @@ if check_password():
     df1 = clean_and_convert(df1)
     
     df2 = clean_and_convert(df2)
+
+    df1 = df1.fillna(0)
+    df2 = df2.fillna(0)
+
+    df1['Month'] = df1['Month'].astype(str)
+    df2['Month'] = df2['Month'].astype(str)
     
     # Ensure columns are properly passed as lists
     y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
