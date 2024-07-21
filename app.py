@@ -41,17 +41,8 @@ if check_password():
     st.title('Atom Mobility Results Dashboard')
 
     # Load credentials from st.secrets
-    creds_toml = st.secrets["google_sheets_credentials"]
+    creds_dict = st.secrets["google_sheets_credentials"]
     
-    try:
-        creds_dict = toml.loads(creds_toml)
-    except TypeError as e:
-        st.error(f"Error loading TOML data: {e}")
-    else:
-        # Convert TOML dictionary to JSON string and then to a dictionary
-        creds_json = json.dumps(creds_dict)
-        creds_dict = json.loads(creds_json)
-
     # Set up the Google Sheets API client
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
