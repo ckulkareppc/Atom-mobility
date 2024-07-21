@@ -141,6 +141,7 @@ if check_password():
     df2['Month'] = df2['Month'].astype(str)
 
     
+    
     # Ensure columns are properly passed as lists
     y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
     y_columns2 = list(df2.columns[1:])  # Skip 'Month' column
@@ -169,7 +170,15 @@ if check_password():
     )
     
     fig3 = go.Figure(data=trace_data, layout=layout)
-    
+
+    def rename_duplicate_columns(df):
+        cols = pd.Series(df.columns)
+            for dup in cols[cols.duplicated()].unique():
+                cols[cols[cols == dup].index.values.tolist()] = [dup + '_' + str(i) if i != 0 else dup for i in range(sum(cols == dup))]
+        df.columns = cols
+
+    rename_duplicate_columns(df)
+
     # User column selection
     st.subheader('Total Results')
     selected_columns1 = st.multiselect('Select columns for Total Results', y_columns1, default=y_columns1[:2])
