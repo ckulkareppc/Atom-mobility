@@ -176,12 +176,9 @@ if check_password():
     if selected_columns1:
         fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
         st.plotly_chart(fig1)
-
-    df1_show = df1.astype(str)
-    st.dataframe(df1_show) 
+    #st.dataframe(df1)
     
-    
-    
+     
     st.subheader('Remarketing Results')
     selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
     if selected_columns2:
