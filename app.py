@@ -173,8 +173,8 @@ if check_password():
 
     def rename_duplicate_columns(df):
         cols = pd.Series(df.columns)
-            for dup in cols[cols.duplicated()].unique():
-                cols[cols[cols == dup].index.values.tolist()] = [dup + '_' + str(i) if i != 0 else dup for i in range(sum(cols == dup))]
+        for dup in cols[cols.duplicated()].unique():
+            cols[cols[cols == dup].index.values.tolist()] = [dup + '_' + str(i) if i != 0 else dup for i in range(sum(cols == dup))]
         df.columns = cols
 
     rename_duplicate_columns(df)
