@@ -144,8 +144,8 @@ if check_password():
     df2['Month'] = df2['Month'].astype(str)
 
     for col in df1.columns:
-    if col != 'Month':
-        df[col] = df[col].astype(float)
+        if col != 'Month':
+            df[col] = df[col].astype(float)
     
     # Ensure columns are properly passed as lists
     y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
