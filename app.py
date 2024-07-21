@@ -40,18 +40,20 @@ if check_password():
     
     st.title('Atom Mobility Results Dashboard')
 
-    # Load credentials from environment variable
     creds_toml = os.getenv('google_sheets_credentials')
-    creds_dict = toml.loads(creds_toml)
-    
-    # Convert TOML dictionary to JSON string and then to a dictionary
-    creds_json = json.dumps(creds_dict)
-    creds_dict = json.loads(creds_json)
-    
-    # Set up the Google Sheets API client
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-    client = gspread.authorize(credentials)
+
+    # Check if the environment variable is loaded properly
+    if creds_toml is None:
+        st.error("Environment variable 'GOOGLE_APPLICATION_CREDENTIALS_TOML' not found.")
+    else:
+        try:
+            creds_dict = toml.loads(creds_toml)
+        except TypeError as e:
+            st.error(f"Error loading TOML data: {e}")
+        else:
+            # Convert TOML dictionary to JSON string and then to a dictionary
+            creds_json = json.dumps(creds_dict)
+            creds_dict = json.loads(creds_json)
     
 
     spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
