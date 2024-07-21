@@ -173,9 +173,9 @@ if check_password():
         fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
         st.plotly_chart(fig1)
         st.write(df1)  # Display the DataFrame
-        except Exception as e:
-            logger.exception("Exception occurred")
-            st.error(f"An error occurred: {e}")
+    except Exception as e:
+        logger.exception("Exception occurred")
+        st.error(f"An error occurred: {e}")
     
     st.subheader('Remarketing Results')
     selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
