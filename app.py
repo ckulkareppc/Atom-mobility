@@ -143,9 +143,6 @@ if check_password():
     df1['Month'] = df1['Month'].astype(str)
     df2['Month'] = df2['Month'].astype(str)
 
-    for col in df1.columns:
-        if col != 'Month':
-            df1[col] = df1[col].astype(float)
     
     # Ensure columns are properly passed as lists
     y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
@@ -182,7 +179,8 @@ if check_password():
     if selected_columns1:
         fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
         st.plotly_chart(fig1)
-    st.dataframe(df1) 
+        
+    
     
     
     st.subheader('Remarketing Results')
@@ -217,6 +215,8 @@ if check_password():
         fig3 = go.Figure(data=trace_data, layout=layout)
         st.plotly_chart(fig3)
     st.write(last_two_months)
+
+st.dataframe(df1) 
 
     
     
