@@ -12,9 +12,9 @@ from st_aggrid import AgGrid
 st.title('Atom Mobility Results Dashboard')
 # Your existing code
 creds_dict = st.secrets["google_sheets_credentials"]
-#scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-#credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-#client = gspread.authorize(credentials)
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(credentials)
 
 
 
