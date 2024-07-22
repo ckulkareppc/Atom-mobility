@@ -12,8 +12,6 @@ from dotenv import load_dotenv
 import toml
 import json
 from st_aggrid import AgGrid
-
-
     
 st.title('Atom Mobility Results Dashboard')
 
