@@ -51,7 +51,8 @@ if check_password():
         spec = importlib.util.spec_from_file_location(page_name, f'{page_name}.py')
         page = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(page)
-        page.main()
+        if hasattr(page, 'run'):
+            page.run()
     
     # Create the navigation menu
     with st.sidebar:
