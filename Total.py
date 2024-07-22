@@ -10,15 +10,15 @@ import json
 
 st.title('Atom Mobility Results Dashboard')
 
-# Load credentials from st.secrets
-creds_dict = st.secrets["google_sheets_credentials"]
+# Convert TOML data (loaded as a dictionary) to JSON format
+def convert_toml_to_json(toml_dict):
+    return json.dumps(toml_dict)
 
-# Ensure that creds_dict is in the correct format. If not, you may need to convert it.
-# For example, if creds_dict is TOML, convert it to JSON format first.
+creds_json = convert_toml_to_json(creds_dict)
 
 # Set up the Google Sheets API client
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
 client = gspread.authorize(credentials)
 
 spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
