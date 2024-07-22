@@ -58,7 +58,7 @@ if check_password():
         selected = option_menu(
             "Main Menu",
             ["Home", "Total", "Generic", "Ride Hailing", "Car Rental"],
-            icons=["house", "file-earmark", "file-earmark"],
+            icons=["file-earmark", "file-earmark"],
             menu_icon="cast",
             default_index=0,
         )
