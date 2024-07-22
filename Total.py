@@ -19,8 +19,7 @@ creds_dict = st.secrets["google_sheets_credentials"]
 st.write("Google Sheets Credentials:", creds_dict)
 
 # Convert credentials to JSON and load them
-creds_json = json.dumps(creds_dict)
-creds_info = json.loads(creds_json)
+creds_info = json.loads(creds_dict)
     
 # Authenticate with Google Sheets API
 creds = service_account.Credentials.from_service_account_info(creds_info)
