@@ -17,7 +17,7 @@ with st.sidebar:
     )
 
 # Total
-elif selected == "Total":
+if selected == "Total":
     st.title("Page 1")
     st.write("Welcome to Page 1!")
 
