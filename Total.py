@@ -11,7 +11,7 @@ from st_aggrid import AgGrid
 st.title('Atom Mobility Results Dashboard')
 
 # Load credentials from Streamlit secrets (already in TOML format)
-creds_dict = st.secrets["google_sheets_credentials"]
+creds_dict = dict(st.secrets["google_sheets_credentials"])  # Create a mutable copy of the dictionary
 
 # Debug: Print the structure of creds_dict
 st.write("Credentials Dictionary:", creds_dict)
@@ -35,6 +35,7 @@ except TypeError as e:
     st.error(f"TypeError: {e}")
 except Exception as e:
     st.error(f"An error occurred: {e}")
+
 
 
 
