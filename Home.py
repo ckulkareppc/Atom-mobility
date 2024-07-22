@@ -47,9 +47,9 @@ if check_password():
     st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
     
     def load_page(file_name):
-    with open(file_name, "r") as file:
-        code = file.read()
-    exec(code, globals())
+        with open(file_name, "r") as file:
+            code = file.read()
+        exec(code, globals())
     
     # Create the navigation menu
     with st.sidebar:
