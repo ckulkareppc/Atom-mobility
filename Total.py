@@ -9,16 +9,12 @@ import json
 from st_aggrid import AgGrid
 
 st.title('Atom Mobility Results Dashboard')
-
-import json
-import streamlit as st
-
 # Load credentials from Streamlit secrets (already in TOML format)
 creds_dict = dict(st.secrets["google_sheets_credentials"])  # Create a mutable copy of the dictionary
 
 # Ensure the private key is correctly formatted
 def format_private_key(key):
-    # Remove the newline characters within the private key value
+    # Remove the escaped newline characters within the private key value
     return key.replace("\\n", "\n")
 
 # Convert TOML data (loaded as a dictionary) to JSON format
@@ -27,12 +23,22 @@ def convert_toml_to_json(toml_dict):
         toml_dict['private_key'] = format_private_key(toml_dict['private_key'])
     return json.dumps(toml_dict)
 
-creds_json = convert_toml_to_json(creds_dict)
+# Perform the conversion
+try:
+    creds_json = convert_toml_to_json(creds_dict)
+except TypeError as e:
+    st.error(f"TypeError: {e}")
+except Exception as e:
+    st.error(f"An error occurred: {e}")
 
 # Set up the Google Sheets API client
 try:
+    # Load the credentials using json.loads
+    credentials_info = json.loads(creds_json)
+    # Use ServiceAccountCredentials to create credentials object
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_info, scope)
+    # Authorize and set up the client
     client = gspread.authorize(credentials)
     st.success("Google Sheets API client successfully set up!")
 except Exception as e:
