@@ -171,7 +171,7 @@ if check_password():
     
     fig3 = go.Figure(data=trace_data, layout=layout)
     
-    df1_md_table = df1.to_markdown()
+    
 
     # User column selection
     st.subheader('Total Results')
