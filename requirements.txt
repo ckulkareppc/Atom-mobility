@@ -8,3 +8,4 @@ google-auth
 google-auth-oauthlib
 python-dotenv
 streamlit-aggrid
+streamlit-option-menu
