@@ -45,9 +45,34 @@ if check_password():
     st.title("Atom Mobility Dashboard")
     
     st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
+    
+    def load_page(file_name):
+        with open(file_name, "r") as file:
+            code = file.read()
+        exec(code, globals())
+    
+    # Create the navigation menu
+    with st.sidebar:
+        selected = option_menu(
+            "Main Menu",
+            ["Home", "Total", "Generic", "Ride Hailing", "Car Rental"],
+            icons=["file-earmark", "file-earmark"],
+            menu_icon="cast",
+            default_index=0,
+        )
 
-    pg = st.navigation([st.Page("Total-2.py")])
-    pg.run()
+    # All pages
+    if selected == "Home":
+        st.title("Home Page")
+        st.write("Welcome to the home page!")
+    elif selected == "Total":
+        load_page("Total-2.py")
+    elif selected == "Generic":
+        load_page("Generic")
+    elif selected == "Ride Hailing":
+        load_page("hailing")
+    elif selected == "Car Rental":
+        load_page("rental")
     
     
 
