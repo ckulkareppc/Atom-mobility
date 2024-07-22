@@ -40,11 +40,6 @@ def check_password():
 
 
 if check_password():
-
-    # Main Home Page
-    st.title("Atom Mobility Dashboard")
-    
-    st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
     
     def load_page(file_name):
         with open(file_name, "r") as file:
