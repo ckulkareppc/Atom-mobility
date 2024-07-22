@@ -13,4 +13,10 @@ st.title('Atom Mobility Results Dashboard')
 # Load credentials from Streamlit secrets (already in TOML format)
 creds_dict = st.secrets["google_sheets_credentials"]
 
+# Convert TOML data (loaded as a dictionary) to JSON format
+def convert_toml_to_json(toml_dict):
+    return json.dumps(toml_dict)
+
+creds_json = convert_toml_to_json(creds_dict)
+
 
