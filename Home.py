@@ -69,7 +69,7 @@ if check_password():
         st.title("TOTAL")
         st.write("Welcome to the total page!")
     elif selected == "Generic":
-        load_page("Generic")
+        load_page("Total.py")
     elif selected == "Ride Hailing":
         load_page("hailing")
     elif selected == "Car Rental":
