@@ -16,37 +16,61 @@ import toml
 import json
 from st_aggrid import AgGrid
 
-# Main Home Page
-st.title("Atom Mobility Dashboard")
+# Authentication function
+def check_password():
+    def password_entered():
+        if st.session_state["password"] == st.secrets["general"]["password"]:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # don't store password
+        else:
+            st.session_state["password_correct"] = False
 
-st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
+    if "password_correct" not in st.session_state:
+        # First run, show input for password.
+        st.text_input("Password", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        # Password not correct, show input + error.
+        st.text_input("Password", type="password", on_change=password_entered, key="password")
+        st.error("😕 Password incorrect")
+        return False
+    else:
+        # Password correct.
+        return True
 
-# Function to load a page
-def load_page(page_name):
-    spec = importlib.util.spec_from_file_location(page_name, f'{page_name}.py')
-    page = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(page)
-    page.main()
+if check_password():
 
-# Create the navigation menu
-with st.sidebar:
-    selected = option_menu(
-        "Main Menu",
-        ["Home", "Total", "Generic", "Ride Hailing", "Car Rental"],
-        icons=["house", "file-earmark", "file-earmark"],
-        menu_icon="cast",
-        default_index=0,
-    )
-
-# Total
-if selected == "Home":
-    st.title("Home Page")
-    st.write("Welcome to the home page!")
-elif selected == "Total":
-    load_page("Total")
-elif selected == "Generic":
-    load_page("Generic")
-elif selected == "Ride Hailing":
-    load_page("hailing")
-elif selected == "Car Rental":
-    load_page("rental")
+    # Main Home Page
+    st.title("Atom Mobility Dashboard")
+    
+    st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
+    
+    # Function to load a page
+    def load_page(page_name):
+        spec = importlib.util.spec_from_file_location(page_name, f'{page_name}.py')
+        page = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(page)
+        page.main()
+    
+    # Create the navigation menu
+    with st.sidebar:
+        selected = option_menu(
+            "Main Menu",
+            ["Home", "Total", "Generic", "Ride Hailing", "Car Rental"],
+            icons=["house", "file-earmark", "file-earmark"],
+            menu_icon="cast",
+            default_index=0,
+        )
+    
+    # Total
+    if selected == "Home":
+        st.title("Home Page")
+        st.write("Welcome to the home page!")
+    elif selected == "Total":
+        load_page("Total")
+    elif selected == "Generic":
+        load_page("Generic")
+    elif selected == "Ride Hailing":
+        load_page("hailing")
+    elif selected == "Car Rental":
+        load_page("rental")
