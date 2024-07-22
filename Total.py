@@ -36,4 +36,10 @@ except TypeError as e:
 except Exception as e:
     st.error(f"An error occurred: {e}")
 
+# Set up the Google Sheets API client
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
+client = gspread.authorize(credentials)
+
+
 
