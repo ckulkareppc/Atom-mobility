@@ -46,13 +46,10 @@ if check_password():
     
     st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
     
-    # Function to load a page
-    def load_page(page_name):
-        spec = importlib.util.spec_from_file_location(page_name, f'{page_name}.py')
-        page = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(page)
-        if hasattr(page, 'run'):
-            page.run()
+    def load_page(file_name):
+    with open(file_name, "r") as file:
+        code = file.read()
+    exec(code, globals())
     
     # Create the navigation menu
     with st.sidebar:
@@ -69,7 +66,7 @@ if check_password():
         st.title("Home Page")
         st.write("Welcome to the home page!")
     elif selected == "Total":
-        load_page("Total")
+        load_page("Total.py")
     elif selected == "Generic":
         load_page("Generic")
     elif selected == "Ride Hailing":
