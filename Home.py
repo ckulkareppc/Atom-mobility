@@ -9,7 +9,7 @@ st.write("Welcome to the Atom Mobility Dashboard! Find your all information here
 
 # Function to load a page
 def load_page(page_name):
-    spec = importlib.util.spec_from_file_location(page_name, f'pages/{page_name}.py')
+    spec = importlib.util.spec_from_file_location(page_name, f'{page_name}.py')
     page = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(page)
     page.main()
