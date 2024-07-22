@@ -16,7 +16,7 @@ creds_dict = dict(st.secrets["google_sheets_credentials"])  # Create a mutable c
 # Ensure the private key is correctly formatted
 def format_private_key(key):
     # Replace escaped newlines with actual newlines
-    return key.replace("\\n", "\n")
+    return key.replace('\\n', '\n')
 
 # Convert TOML data (loaded as a dictionary) to JSON format
 def convert_toml_to_json(toml_dict):
@@ -24,7 +24,7 @@ def convert_toml_to_json(toml_dict):
         toml_dict['private_key'] = format_private_key(toml_dict['private_key'])
     return json.dumps(toml_dict)
 
-# Perform the conversion
+# Perform the conversion and set up the Google Sheets API client
 try:
     creds_json = convert_toml_to_json(creds_dict)
 
@@ -36,9 +36,12 @@ try:
 
 except TypeError as e:
     st.error(f"TypeError: {e}")
+except json.JSONDecodeError as e:
+    st.error(f"JSONDecodeError: {e}")
+except gspread.exceptions.GSpreadException as e:
+    st.error(f"GSpreadException: {e}")
 except Exception as e:
     st.error(f"An error occurred: {e}")
-
 
 
 
