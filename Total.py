@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import toml
 import json
 from st_aggrid import AgGrid
-    
+
 st.title('Atom Mobility Results Dashboard')
 
 # Load credentials from st.secrets
@@ -91,18 +91,18 @@ df2['Month'] = new_months
 def clean_and_convert(df):
 def clean_value(value):
 if isinstance(value, str):
-    value = value.replace('€', '').replace(',', '').replace(' ', '').replace('%', '')
-    if value == '?':
-        value = '0'
-    try:
-        return float(value)
-    except ValueError:
-        return np.nan  # if conversion fails, return NaN
+value = value.replace('€', '').replace(',', '').replace(' ', '').replace('%', '')
+if value == '?':
+value = '0'
+try:
+return float(value)
+except ValueError:
+return np.nan  # if conversion fails, return NaN
 return value
 
 for col in df.columns:
 if col != 'Month':
-    df[col] = df[col].apply(clean_value)
+df[col] = df[col].apply(clean_value)
 return df
 
 df1 = clean_and_convert(df1)
