@@ -25,14 +25,14 @@ with st.sidebar:
     )
 
 # Total
-if page == "Home":
+if selected == "Home":
     st.title("Home Page")
     st.write("Welcome to the home page!")
-elif page == "Total":
+elif selected == "Total":
     load_page("Total")
-elif page == "Generic":
+elif selected == "Generic":
     load_page("Generic")
-elif page == "Ride Hailing":
+elif selected == "Ride Hailing":
     load_page("hailing")
-elif page == "Car Rental":
+elif selected == "Car Rental":
     load_page("rental")
