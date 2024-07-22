@@ -38,18 +38,6 @@ def check_password():
         # Password correct.
         return True
 
-# All pages
-if selected == "Home":
-    st.title("Home Page")
-    st.write("Welcome to the home page!")
-elif selected == "Total":
-    load_page("Total")
-elif selected == "Generic":
-    load_page("Generic")
-elif selected == "Ride Hailing":
-    load_page("hailing")
-elif selected == "Car Rental":
-    load_page("rental")
 
 if check_password():
 
@@ -74,5 +62,18 @@ if check_password():
             menu_icon="cast",
             default_index=0,
         )
+
+    # All pages
+    if selected == "Home":
+        st.title("Home Page")
+        st.write("Welcome to the home page!")
+    elif selected == "Total":
+        load_page("Total")
+    elif selected == "Generic":
+        load_page("Generic")
+    elif selected == "Ride Hailing":
+        load_page("hailing")
+    elif selected == "Car Rental":
+        load_page("rental")
     
 
