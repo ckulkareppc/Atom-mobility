@@ -18,7 +18,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope
 client = gspread.authorize(credentials)
 
 spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
-worksheet = spreadsheet.worksheet("Total")
+worksheet = spreadsheet.worksheet("Sharing/Generic")
 data = worksheet.get_all_values()
 
 # Convert the data to a DataFrame
