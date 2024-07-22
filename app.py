@@ -189,7 +189,7 @@ if check_password():
     if selected_columns2:
         fig2 = px.line(df2, x='Month', y=selected_columns2, title='Google PPC Results - Remarketing', height=600, width=800)
         st.plotly_chart(fig2)
-    st.dataframe(df2)
+    AgGrid(df2)
     
     # Select the last two rows
     last_two_months = df1.tail(2)
@@ -215,7 +215,7 @@ if check_password():
     
         fig3 = go.Figure(data=trace_data, layout=layout)
         st.plotly_chart(fig3)
-    st.write(df)
+    AgGrid(last_two_months)
 
 
 
