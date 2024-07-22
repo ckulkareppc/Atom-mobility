@@ -68,8 +68,7 @@ if check_password():
         st.title("Home Page")
         st.write("Welcome to the home page!")
     elif selected == "Total":
-        st.title("Total")
-        st.write("Welcome to the Total page!")
+        load_page("Total")
     elif selected == "Generic":
         load_page("Generic")
     elif selected == "Ride Hailing":
