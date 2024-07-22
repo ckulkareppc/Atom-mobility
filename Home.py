@@ -46,7 +46,7 @@ if check_password():
     
     st.write("Welcome to the Atom Mobility Dashboard! Find your all information here.")
 
-    pg = st.navigation([st.Page("Total-2.py"), st.Page("page_2.py")])
+    pg = st.navigation([st.Page("Total-2.py")])
     pg.run()
     
     
