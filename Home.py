@@ -40,6 +40,7 @@ def check_password():
 
 
 if check_password():
+    st.title("Atom Mobility Dashboard")
     
     def load_page(file_name):
         with open(file_name, "r") as file:
@@ -61,12 +62,11 @@ if check_password():
         st.title("Home Page")
         st.write("Welcome to the home page!")
     elif selected == "Total":
-        st.title("TOTAL")
-        st.write("Welcome to the total page!")
+        load_page("Total.py")
     elif selected == "Generic":
-        load_page("Total-2.py")
+        load_page("Generic.py")
     elif selected == "Ride Hailing":
-        load_page("hailing")
+        load_page("Hailing.py")
     elif selected == "Car Rental":
-        load_page("rental")
+        load_page("Rental.py")
     
