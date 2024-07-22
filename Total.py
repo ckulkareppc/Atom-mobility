@@ -5,199 +5,176 @@ import numpy as np
 import plotly.graph_objs as go
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from st_aggrid import AgGrid
 import json
+from st_aggrid import AgGrid
 
 st.title('Atom Mobility Results Dashboard')
 
-try:
-    # Load credentials from Streamlit secrets
-    creds_dict = st.secrets["google_sheets_credentials"]
-    
-    if not isinstance(creds_dict, dict):
-        st.error("Credentials are not in the expected dictionary format.")
-        st.stop()
+# Load credentials from Streamlit secrets (already in TOML format)
+creds_dict = st.secrets["google_sheets_credentials"]
 
-    # Convert TOML data (loaded as a dictionary) to JSON format
-    def convert_toml_to_json(toml_dict):
-        try:
-            return json.dumps(toml_dict)
-        except TypeError as e:
-            st.error(f"Error converting TOML to JSON: {e}")
-            st.stop()
-    
-    creds_json = convert_toml_to_json(creds_dict)
+# Convert TOML data (loaded as a dictionary) to JSON format
+def convert_toml_to_json(toml_dict):
+    return json.dumps(toml_dict)
 
-    # Set up the Google Sheets API client
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    try:
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
-        client = gspread.authorize(credentials)
-    except Exception as e:
-        st.error(f"Error setting up Google Sheets API client: {e}")
-        st.stop()
+creds_json = convert_toml_to_json(creds_dict)
 
-    try:
-        spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
-        worksheet = spreadsheet.worksheet("Total")
-        data = worksheet.get_all_values()
-    except Exception as e:
-        st.error(f"Error accessing Google Sheets data: {e}")
-        st.stop()
+# Set up the Google Sheets API client
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
+client = gspread.authorize(credentials)
 
-    # Convert the data to a DataFrame
-    try:
-        df = pd.DataFrame(data)
+spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
+worksheet = spreadsheet.worksheet("Total")
+data = worksheet.get_all_values()
 
-        # Optionally, set the first row as the header
-        df.columns = df.iloc[0]
-        df = df[1:]
+# Convert the data to a DataFrame
+df = pd.DataFrame(data)
 
-        # Reset the index
-        df.reset_index(drop=True, inplace=True)
+# Optionally, set the first row as the header
+df.columns = df.iloc[0]
+df = df[1:]
 
-        # Set the first column as the headers
-        df.columns = df.iloc[0]
-        df = df[1:]
-        df = df.T.reset_index()
-        df.columns = df.iloc[0]
-        df = df[1:]
+# Reset the index
+df.reset_index(drop=True, inplace=True)
 
-        df = df.rename(columns={'Google PPC': 'Month'})
+# Set the first column as the headers
+df.columns = df.iloc[0]
+df = df[1:]
+df = df.T.reset_index()
+df.columns = df.iloc[0]
+df = df[1:]
 
-        # Create the first DataFrame up to column 'A'
-        df1 = df.loc[:, :'Cost per Offline Conversion']
+df = df.rename(columns={'Google PPC': 'Month'})
 
-        # Add the year to the month column starting from 2022
-        start_year = 2022
-        months = df1['Month'].tolist()
+# Create the first DataFrame up to column 'A'
+df1 = df.loc[:, :'Cost per Offline Conversion']
 
-        # Generate the new month-year strings
-        new_months = []
-        year = start_year
-        for month in months:
-            new_months.append(f"{month} {year}")
-            if month == 'December':
-                year += 1
+# Add the year to the month column starting from 2022
+start_year = 2022
+months = df1['Month'].tolist()
 
-        # Update the 'Month' column
-        df1['Month'] = new_months
+# Generate the new month-year strings
+new_months = []
+year = start_year
+for month in months:
+    new_months.append(f"{month} {year}")
+    if month == 'December':
+        year += 1
 
-        df2 = df.loc[:, 'Remarketing':]
-        df2 = df2.rename(columns={'Remarketing': 'Month'})
+# Update the 'Month' column
+df1['Month'] = new_months
 
-        # Add the year to the month column starting from 2022
-        start_year = 2022
-        months = df2['Month'].tolist()
+df2 = df.loc[:, 'Remarketing':]
+df2 = df2.rename(columns={'Remarketing': 'Month'})
 
-        # Generate the new month-year strings
-        new_months = []
-        year = start_year
-        for month in months:
-            new_months.append(f"{month} {year}")
-            if month == 'December':
-                year += 1
+# Add the year to the month column starting from 2022
+start_year = 2022
+months = df2['Month'].tolist()
 
-        # Update the 'Month' column
-        df2['Month'] = new_months
+# Generate the new month-year strings
+new_months = []
+year = start_year
+for month in months:
+    new_months.append(f"{month} {year}")
+    if month == 'December':
+        year += 1
 
-        def clean_and_convert(df):
-            def clean_value(value):
-                if isinstance(value, str):
-                    value = value.replace('€', '').replace(',', '').replace(' ', '').replace('%', '')
-                    if value == '?':
-                        value = '0'
-                    try:
-                        return float(value)
-                    except ValueError:
-                        return np.nan  # if conversion fails, return NaN
-                return value
+# Update the 'Month' column
+df2['Month'] = new_months
 
-            for col in df.columns:
-                if col != 'Month':
-                    df[col] = df[col].apply(clean_value)
-            return df
+def clean_and_convert(df):
+    def clean_value(value):
+        if isinstance(value, str):
+            value = value.replace('€', '').replace(',', '').replace(' ', '').replace('%', '')
+            if value == '?':
+                value = '0'
+            try:
+                return float(value)
+            except ValueError:
+                return np.nan  # if conversion fails, return NaN
+        return value
 
-        df1 = clean_and_convert(df1)
-        df2 = clean_and_convert(df2)
+    for col in df.columns:
+        if col != 'Month':
+            df[col] = df[col].apply(clean_value)
+    return df
 
-        df1 = df1.fillna(0)
-        df2 = df2.fillna(0)
+df1 = clean_and_convert(df1)
+df2 = clean_and_convert(df2)
 
-        df1['Month'] = df1['Month'].astype(str)
-        df2['Month'] = df2['Month'].astype(str)
+df1 = df1.fillna(0)
+df2 = df2.fillna(0)
 
-        # Ensure columns are properly passed as lists
-        y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
-        y_columns2 = list(df2.columns[1:])  # Skip 'Month' column
+df1['Month'] = df1['Month'].astype(str)
+df2['Month'] = df2['Month'].astype(str)
 
-        # Create the Plotly figures
-        fig1 = px.line(df1, x='Month', y=y_columns1, title='Google PPC Results - Total')
-        fig2 = px.line(df2, x='Month', y=y_columns2, title='Google PPC Results - Remarketing')
+# Ensure columns are properly passed as lists
+y_columns1 = list(df1.columns[1:])  # Skip 'Month' column
+y_columns2 = list(df2.columns[1:])  # Skip 'Month' column
 
-        # Select the last two rows
-        last_two_months = df1.tail(2)
-        y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
+# Create the Plotly figures
+fig1 = px.line(df1, x='Month', y=y_columns1, title='Google PPC Results - Total')
+fig2 = px.line(df2, x='Month', y=y_columns2, title='Google PPC Results - Remarketing')
 
-        # Prepare data for plotting
-        trace_data = []
-        for col in last_two_months.columns:
-            if col != 'Month':
-                trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
-                trace_data.append(trace)
+# Select the last two rows
+last_two_months = df1.tail(2)
+y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
 
-        # Layout
-        layout = go.Layout(
-            title='Last two months',
-            xaxis=dict(title='Month'),
-            yaxis=dict(title='Values'),
-            barmode='group'
-        )
+# Prepare data for plotting
+trace_data = []
+for col in last_two_months.columns:
+    if col != 'Month':
+        trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
+        trace_data.append(trace)
 
-        fig3 = go.Figure(data=trace_data, layout=layout)
+# Layout
+layout = go.Layout(
+    title='Last two months',
+    xaxis=dict(title='Month'),
+    yaxis=dict(title='Values'),
+    barmode='group'
+)
 
-        # User column selection
-        st.subheader('Total Results')
-        selected_columns1 = st.multiselect('Select columns for Total Results', y_columns1, default=y_columns1[:2])
-        if selected_columns1:
-            fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
-            st.plotly_chart(fig1)
-            AgGrid(df1)
+fig3 = go.Figure(data=trace_data, layout=layout)
 
-        st.subheader('Remarketing Results')
-        selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
-        if selected_columns2:
-            fig2 = px.line(df2, x='Month', y=selected_columns2, title='Google PPC Results - Remarketing', height=600, width=800)
-            st.plotly_chart(fig2)
-            AgGrid(df2)
+# User column selection
+st.subheader('Total Results')
+selected_columns1 = st.multiselect('Select columns for Total Results', y_columns1, default=y_columns1[:2])
+if selected_columns1:
+    fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
+    st.plotly_chart(fig1)
+    AgGrid(df1)
 
-        # Select the last two rows
-        last_two_months = df1.tail(2)
-        y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
+st.subheader('Remarketing Results')
+selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
+if selected_columns2:
+    fig2 = px.line(df2, x='Month', y=selected_columns2, title='Google PPC Results - Remarketing', height=600, width=800)
+    st.plotly_chart(fig2)
+    AgGrid(df2)
 
-        st.subheader('Last two months')
-        selected_columns3 = st.multiselect('Select columns for Last two months', y_columns3, default=y_columns3[:2])
-        if selected_columns3:
-            trace_data = []
-            for col in selected_columns3:
-                trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
-                trace_data.append(trace)
+# Select the last two rows
+last_two_months = df1.tail(2)
+y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
 
-            # Layout
-            layout = go.Layout(
-                title='Last two months',
-                xaxis=dict(title='Month'),
-                yaxis=dict(title='Values'),
-                barmode='group',
-                height=600,
-                width=800
-            )
+st.subheader('Last two months')
+selected_columns3 = st.multiselect('Select columns for Last two months', y_columns3, default=y_columns3[:2])
+if selected_columns3:
+    trace_data = []
+    for col in selected_columns3:
+        trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
+        trace_data.append(trace)
 
-            fig3 = go.Figure(data=trace_data, layout=layout)
-            st.plotly_chart(fig3)
-            AgGrid(last_two_months)
+    # Layout
+    layout = go.Layout(
+        title='Last two months',
+        xaxis=dict(title='Month'),
+        yaxis=dict(title='Values'),
+        barmode='group',
+        height=600,
+        width=800
+    )
 
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-        st.stop()
-
+    fig3 = go.Figure(data=trace_data, layout=layout)
+    st.plotly_chart(fig3)
+    AgGrid(last_two_months)
