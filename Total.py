@@ -30,9 +30,13 @@ def convert_toml_to_json(toml_dict):
 creds_json = convert_toml_to_json(creds_dict)
 
 # Set up the Google Sheets API client
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
-client = gspread.authorize(credentials)
+try:
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
+    client = gspread.authorize(credentials)
+    st.success("Google Sheets API client successfully set up!")
+except Exception as e:
+    st.error(f"An error occurred while setting up the Google Sheets API client: {e}")
 
 spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1yEnYDfBF2flJpVhcRHVHcgttRBMaCrUphqBSjoOezns/edit?usp=sharing')
 worksheet = spreadsheet.worksheet("Total")
