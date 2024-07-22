@@ -12,6 +12,8 @@ st.title('Atom Mobility Results Dashboard')
 
 # Load credentials from st.secrets
 creds_dict = st.secrets["google_sheets_credentials"]
+
+st.write("Google Sheets Credentials:", creds_dict)
     
 # Set up the Google Sheets API client
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
