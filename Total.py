@@ -17,12 +17,9 @@ st.title('Atom Mobility Results Dashboard')
 creds_dict = st.secrets["google_sheets_credentials"]
 
 st.write("Google Sheets Credentials:", creds_dict)
-
-# Convert credentials to JSON and load them
-creds_info = json.loads(creds_dict)
     
 # Authenticate with Google Sheets API
-creds = service_account.Credentials.from_service_account_info(creds_info)
+creds = service_account.Credentials.from_service_account_info(creds_dict)
 service = build('sheets', 'v4', credentials=creds)
 
 # Define the spreadsheet ID and range you want to access
