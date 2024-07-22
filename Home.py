@@ -62,7 +62,7 @@ if check_password():
             default_index=0,
         )
     
-    # Total
+    # All pages
     if selected == "Home":
         st.title("Home Page")
         st.write("Welcome to the home page!")
