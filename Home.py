@@ -16,13 +16,8 @@ with st.sidebar:
         default_index=0,
     )
 
-# Home Page
-if selected == "Home":
-    st.title("Home Page")
-    st.write("Welcome to the home page!")
-
-# Page 1
-elif selected == "Page 1":
+# Total
+elif selected == "Total":
     st.title("Page 1")
     st.write("Welcome to Page 1!")
 
