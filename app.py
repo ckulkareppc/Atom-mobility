@@ -171,7 +171,7 @@ if check_password():
     
     fig3 = go.Figure(data=trace_data, layout=layout)
     
-    df1_html_table = df1.to_html()
+    df1_md_table = df1.to_markdown()
 
     # User column selection
     st.subheader('Total Results')
@@ -179,7 +179,7 @@ if check_password():
     if selected_columns1:
         fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
         st.plotly_chart(fig1)
-    st.write(df1_html_table, unsafe_allow_html=True)
+    st.markdown(df1_md_table)
     
      
     st.subheader('Remarketing Results')
