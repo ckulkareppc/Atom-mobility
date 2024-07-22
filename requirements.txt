@@ -9,3 +9,8 @@ google-auth-oauthlib
 python-dotenv
 streamlit-aggrid
 streamlit-option-menu
+google-api-python-client
+requests
+pyyaml
+
+
