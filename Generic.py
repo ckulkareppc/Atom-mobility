@@ -61,6 +61,15 @@ df1['Month'] = new_months
 df2 = df.loc[:, 'Remarketing':]
 df2 = df2.rename(columns={'Remarketing': 'Month'})
 
+df2 = df2.fillna(0)
+df2 = df2.loc[:, :'CPL (cost per offline conversion)']
+
+# Remove the specific phrase from the column
+df2['Month'] = df2['Month'].str.replace('(only sharing data)', '')
+
+# If there might be extra whitespace after removing the phrase, strip it
+df2['Month'] = df2['Month'].str.strip()
+
 # Add the year to the month column starting from 2022
 start_year = 2022
 months = df2['Month'].tolist()
