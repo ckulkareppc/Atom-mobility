@@ -113,6 +113,70 @@ y_columns2 = [item for item in y_columns2 if item.strip() != '']
 fig1 = px.line(df1, x='Month', y=y_columns1, title='Google PPC Results - Total')
 fig2 = px.line(df2, x='Month', y=y_columns2, title='Google PPC Results - Remarketing')
 
+# Select the last two rows
+last_two_months = df1.tail(2)
+y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
+
+y_columns3 = [item for item in y_columns3 if item.strip() != '']
+
+# Prepare data for plotting
+trace_data = []
+for col in last_two_months.columns:
+    if col != 'Month':
+        trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
+        trace_data.append(trace)
+
+# Layout
+layout = go.Layout(
+    title='Last two months',
+    xaxis=dict(title='Month'),
+    yaxis=dict(title='Values'),
+    barmode='group'
+)
+
+fig3 = go.Figure(data=trace_data, layout=layout)
+
+# User column selection
+st.subheader('Generic Results')
+selected_columns1 = st.multiselect('Select columns for Total Results', y_columns1, default=y_columns1[:2])
+if selected_columns1:
+    fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
+    st.plotly_chart(fig1)
+    AgGrid(df1)
+
+st.subheader('Generic Remarketing Results')
+selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
+if selected_columns2:
+    fig2 = px.line(df2, x='Month', y=selected_columns2, title='Google PPC Results - Remarketing', height=600, width=800)
+    st.plotly_chart(fig2)
+    AgGrid(df2)
+
+# Select the last two rows
+last_two_months = df1.tail(2)
+y_columns3 = list(last_two_months.columns[1:])  # Skip 'Month' column
+
+st.subheader('Generic - Last two months')
+selected_columns3 = st.multiselect('Select columns for Last two months', y_columns3, default=y_columns3[:2])
+if selected_columns3:
+    trace_data = []
+    for col in selected_columns3:
+        trace = go.Bar(x=last_two_months['Month'], y=last_two_months[col], name=col)
+        trace_data.append(trace)
+
+    # Layout
+    layout = go.Layout(
+        title='Last two months',
+        xaxis=dict(title='Month'),
+        yaxis=dict(title='Values'),
+        barmode='group',
+        height=600,
+        width=800
+    )
+
+    fig3 = go.Figure(data=trace_data, layout=layout)
+    st.plotly_chart(fig3)
+    AgGrid(last_two_months)
+
 
 
 
