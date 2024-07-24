@@ -132,14 +132,14 @@ layout = go.Layout(
 fig3 = go.Figure(data=trace_data, layout=layout)
 
 # User column selection
-st.subheader('Total Results')
+st.subheader('Car Rental Results')
 selected_columns1 = st.multiselect('Select columns for Total Results', y_columns1, default=y_columns1[:2])
 if selected_columns1:
     fig1 = px.line(df1, x='Month', y=selected_columns1, title='Google PPC Results - Total', height=600, width=800)
     st.plotly_chart(fig1)
     AgGrid(df1)
 
-st.subheader('Remarketing Results')
+st.subheader('Car Rental Remarketing Results')
 selected_columns2 = st.multiselect('Select columns for Remarketing Results', y_columns2, default=y_columns2[:2])
 if selected_columns2:
     fig2 = px.line(df2, x='Month', y=selected_columns2, title='Google PPC Results - Remarketing', height=600, width=800)
