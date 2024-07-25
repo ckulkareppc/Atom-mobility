@@ -25,7 +25,7 @@ data = worksheet.get_all_values()
 # Convert the data to a DataFrame
 df = pd.DataFrame(data)
 
-df = df.T
+df = df.transpose()
 df.columns = df.iloc[0]
 df = df[1:]
 df['Month'] = df.index
